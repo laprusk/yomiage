@@ -1,10 +1,3 @@
-# Yomiage-zan Automatic Generation Library
-
-読上算、読上暗算の問題を自動生成するRustライブラリです。
-
-## Example
-
-```rust
 use yomiage;
 
 fn main() {
@@ -29,4 +22,3 @@ fn main() {
     println!("{}", yp.script_answer());
     // その答え、182445円です。
 }
-```

@@ -1,7 +1,7 @@
 use crate::generate::generate;
 
 #[derive(Debug, Clone, Copy)]
-pub struct YomiageConfig {
+pub struct Config {
     pub min_digit: u32,
     pub max_digit: u32,
     pub length: u32,
@@ -9,7 +9,7 @@ pub struct YomiageConfig {
     pub allow_negative: bool,
 }
 
-impl YomiageConfig {
+impl Config {
     pub fn check(&self) -> Result<(), String> {
         if self.min_digit < 1 {
             return Err("min_digit must be greater than or equal to 1".to_string());
@@ -31,14 +31,14 @@ impl YomiageConfig {
 }
 
 #[derive(Debug, Clone)]
-pub struct YomiageProblem {
+pub struct Problem {
     pub problem: Vec<i128>,
     pub answer: i128,
-    pub config: YomiageConfig,
+    pub config: Config,
 }
 
-impl YomiageProblem {
-    pub fn new(config: YomiageConfig) -> Result<Self, String> {
+impl Problem {
+    pub fn new(config: Config) -> Result<Self, String> {
         config.check()?;
 
         let problem = generate(config);
@@ -100,7 +100,7 @@ mod test {
 
     #[test]
     fn test_yomiage_problem_new() {
-        let config = YomiageConfig {
+        let config = Config {
             min_digit: 1,
             max_digit: 2,
             length: 10,
@@ -110,7 +110,7 @@ mod test {
         let minimum = 10_i128.pow(config.min_digit - 1);
         let maximum = 10_i128.pow(config.max_digit) - 1;
         for _ in 0..10 {
-            let yp = YomiageProblem::new(config).unwrap();
+            let yp = Problem::new(config).unwrap();
             println!("{:?}", yp.problem);
             println!("{:?}", yp.answer);
             assert_eq!(yp.problem.len(), config.length as usize);
@@ -122,75 +122,75 @@ mod test {
 
     #[test]
     fn test_yomiage_problem_script_meta() {
-        let config = YomiageConfig {
+        let config = Config {
             min_digit: 1,
             max_digit: 2,
             length: 7,
             subtractions: 0,
             allow_negative: false,
         };
-        let yp = YomiageProblem::new(config).unwrap();
+        let yp = Problem::new(config).unwrap();
         let script_meta = yp.script_meta();
         println!("{}", script_meta);
 
-        let config = YomiageConfig {
+        let config = Config {
             min_digit: 7,
             max_digit: 12,
             length: 10,
             subtractions: 3,
             allow_negative: false,
         };
-        let yp = YomiageProblem::new(config).unwrap();
+        let yp = Problem::new(config).unwrap();
         let script_meta = yp.script_meta();
         println!("{}", script_meta);
     }
 
     #[test]
     fn test_yomiage_problem_script_problem() {
-        let config = YomiageConfig {
+        let config = Config {
             min_digit: 3,
             max_digit: 6,
             length: 10,
             subtractions: 3,
             allow_negative: false,
         };
-        let yp = YomiageProblem::new(config).unwrap();
+        let yp = Problem::new(config).unwrap();
         let script_problem = yp.script_problem();
         println!("{}", script_problem);
 
-        let config = YomiageConfig {
+        let config = Config {
             min_digit: 7,
             max_digit: 12,
             length: 10,
             subtractions: 3,
             allow_negative: false,
         };
-        let yp = YomiageProblem::new(config).unwrap();
+        let yp = Problem::new(config).unwrap();
         let script_problem = yp.script_problem();
         println!("{}", script_problem);
     }
 
     #[test]
     fn test_yomiage_problem_script_answer() {
-        let config = YomiageConfig {
+        let config = Config {
             min_digit: 1,
             max_digit: 2,
             length: 7,
             subtractions: 0,
             allow_negative: false,
         };
-        let yp = YomiageProblem::new(config).unwrap();
+        let yp = Problem::new(config).unwrap();
         let script_answer = yp.script_answer();
         println!("{}", script_answer);
 
-        let config = YomiageConfig {
+        let config = Config {
             min_digit: 7,
             max_digit: 12,
             length: 10,
             subtractions: 9,
             allow_negative: true,
         };
-        let yp = YomiageProblem::new(config).unwrap();
+        let yp = Problem::new(config).unwrap();
         let script_answer = yp.script_answer();
         println!("{}", script_answer);
     }
@@ -198,7 +198,7 @@ mod test {
     #[test]
     fn test_yomiage_config_check() {
         // OK
-        let config = YomiageConfig {
+        let config = Config {
             min_digit: 3,
             max_digit: 6,
             length: 10,
@@ -208,7 +208,7 @@ mod test {
         assert!(config.check().is_ok());
 
         // min_digit < 1
-        let config = YomiageConfig {
+        let config = Config {
             min_digit: 0,
             max_digit: 6,
             length: 10,
@@ -218,7 +218,7 @@ mod test {
         assert!(config.check().is_err());
 
         // max_digit < min_digit
-        let config = YomiageConfig {
+        let config = Config {
             min_digit: 3,
             max_digit: 1,
             length: 10,
@@ -228,7 +228,7 @@ mod test {
         assert!(config.check().is_err());
 
         // length < 1
-        let config = YomiageConfig {
+        let config = Config {
             min_digit: 3,
             max_digit: 6,
             length: 0,
@@ -238,7 +238,7 @@ mod test {
         assert!(config.check().is_err());
 
         // subtractions >= length
-        let config = YomiageConfig {
+        let config = Config {
             min_digit: 3,
             max_digit: 6,
             length: 10,
@@ -248,7 +248,7 @@ mod test {
         assert!(config.check().is_err());
 
         // subtractions >= length
-        let config = YomiageConfig {
+        let config = Config {
             min_digit: 3,
             max_digit: 6,
             length: 10,

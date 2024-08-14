@@ -1,4 +1,4 @@
 mod generate;
-mod problem;
+mod yomiage;
 
-pub use problem::{YomiageConfig, YomiageProblem};
+pub use yomiage::{Config, Problem};

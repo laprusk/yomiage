@@ -1,8 +1,8 @@
-use crate::problem::YomiageConfig;
+use crate::yomiage::Config;
 use rand::Rng;
 use rand::seq::SliceRandom;
 
-pub fn generate(config: YomiageConfig) -> Vec<i128> {
+pub fn generate(config: Config) -> Vec<i128> {
     let mut problem = vec![0_i128; config.length as usize];
     let mut rng = rand::thread_rng();
 
@@ -24,12 +24,12 @@ pub fn generate(config: YomiageConfig) -> Vec<i128> {
     problem
 }
 
-fn make_digit_pattern(YomiageConfig { 
+fn make_digit_pattern(Config { 
     min_digit,
     max_digit,
     length,
     ..
-}: YomiageConfig, rng: &mut impl Rng) -> Vec<u32> {
+}: Config, rng: &mut impl Rng) -> Vec<u32> {
     // min_digitからmax_digitまでの数字をランダムに並べたリストを作成
     let mut digit_list: Vec<u32> = (min_digit..=max_digit).collect();
     digit_list.shuffle(rng);
@@ -82,12 +82,12 @@ fn make_number(digit: u32, rng: &mut impl Rng) -> i128 {
 
 fn set_subtractions(
     problem: &mut Vec<i128>,
-    YomiageConfig { 
+    Config { 
         length,
         subtractions,
         allow_negative,
         ..
-    }: YomiageConfig,
+    }: Config,
     rng: &mut impl Rng) {
     
     problem.shuffle(rng);
@@ -148,7 +148,7 @@ mod test {
 
     #[test]
     fn test_generate() {
-        let config = YomiageConfig {
+        let config = Config {
             min_digit: 3,
             max_digit: 6,
             length: 10,
@@ -164,7 +164,7 @@ mod test {
 
     #[test]
     fn test_make_digit_pattern() {
-        let config = YomiageConfig {
+        let config = Config {
             min_digit: 3,
             max_digit: 6,
             length: 3,
@@ -195,7 +195,7 @@ mod test {
     #[test]
     fn test_set_subtractions() {
         let problem = vec![1, 2, 9, 10];
-        let config = YomiageConfig {
+        let config = Config {
             min_digit: 3,
             max_digit: 6,
             length: 4,
