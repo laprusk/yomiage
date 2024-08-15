@@ -1,6 +1,10 @@
 use crate::generate::generate;
 
+#[cfg(feature = "serde_support")]
+use serde::{Serialize, Deserialize};
+
 #[derive(Debug, Clone, Copy)]
+#[cfg_attr(feature = "serde_support", derive(Serialize, Deserialize))]
 pub struct Config {
     pub min_digit: u32,
     pub max_digit: u32,
